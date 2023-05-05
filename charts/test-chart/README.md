@@ -8,7 +8,7 @@ A Helm chart for Kubernetes
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| Jakub Stehlik |  |  |
+| Balsir |  |  |
 
 ## Values
 
