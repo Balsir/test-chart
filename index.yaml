@@ -3,6 +3,18 @@ entries:
   test-chart:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-05-05T20:09:17.009274165Z"
+    description: A Helm chart for Kubernetes
+    digest: c8c645e199ad969ea8d96bc1921c422c9903a1c18197ee852de36332953a4c83
+    maintainers:
+    - name: Balsir
+    name: test-chart
+    type: application
+    urls:
+    - https://github.com/Balsir/test-chart/releases/download/test-chart-0.2.1/test-chart-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-05-05T16:24:53.067242896Z"
     description: A Helm chart for Kubernetes
     digest: b43bcadbbc1830c347aaeeefa404d2606e87164044fe8f44fe5552dfff3644e5
@@ -25,4 +37,4 @@ entries:
     urls:
     - https://github.com/Balsir/test-chart/releases/download/test-chart-0.1.0/test-chart-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-05T16:24:53.067248896Z"
+generated: "2023-05-05T20:09:17.009289065Z"
