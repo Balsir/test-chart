@@ -40,6 +40,13 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
         uses: helm/kind-action@v1.5.0
 
+      - name: Install Kyverno
+        id: install-kyverno
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          helm repo add kyverno https://kyverno.github.io/kyverno/
+          helm install kyverno kyverno/kyverno --namespace kyverno --create-namespace --version 2.7.2
+
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
         run: ct install --target-branch ${{ github.event.repository.default_branch }}
@@ -55,4 +62,3 @@ jobs:
       - name: Run ah lint
         working-directory: ./charts/
         run: ah lint
-
