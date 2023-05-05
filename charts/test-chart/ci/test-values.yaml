@@ -1,0 +1,3 @@
+policies:
+  disallowHostNamespaces:
+    enabled: true
