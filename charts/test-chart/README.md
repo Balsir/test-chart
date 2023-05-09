@@ -6,6 +6,7 @@ A Helm chart for Kubernetes
 
 ## About
 <$chart-name> Helm chart
+Testiiing
 
 ## Values
 
