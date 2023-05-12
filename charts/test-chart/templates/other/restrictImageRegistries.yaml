@@ -1,5 +1,5 @@
-{{- $name := "disallowHostNamespaces" }}
-{{- $category := "podSecurityBaseline" }}
+{{- $name := "restrictImageRegistries" }}
+{{- $category := "other" }}
 {{- $policyValues := get .Values.policies $name }}
 {{- $categoryValues := get .Values.policyCategories $category }}
 
@@ -12,24 +12,24 @@ metadata:
 {{- with $policyValues.autogenControllers }}
     pod-policies.kyverno.io/autogen-controllers: {{ . }}
 {{- end }}
-    policies.kyverno.io/title: Disallow Host Namespaces
-    policies.kyverno.io/category: {{ $category }}
+    policies.kyverno.io/title: Restrict Image Registries
+    policies.kyverno.io/category: {{ $category }}, Best Practices, EKS Best Practices
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.6.0
-    kyverno.io/kubernetes-version: "1.22-1.23"
+    policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
-      Host namespaces (Process ID namespace, Inter-Process Communication namespace, and
-      network namespace) allow access to shared information and can be used to elevate
-      privileges. Pods should not be allowed access to host namespaces. This policy ensures
-      fields which make use of these host namespaces are unset or set to `false`.
+      Images from unknown, public registries can be of dubious quality and may not be
+      scanned and secured, representing a high degree of risk. Requiring use of known, approved
+      registries helps reduce threat exposure by ensuring image pulls only come from them.
+      Use of this policy requires customization to define your allowable registries.
+      To allow registries `eu.foo.io` and `bar.io`, set .allowedRegistries to regex pattern "eu.foo.io/* | bar.io/*"
 spec:
 {{ include "kyverno-policies.policySettings" (list $name $category $) }}
   rules:
 {{- if $policyValues.rulesOverride }}
 {{ toYaml $policyValues.rulesOverride | indent 4 }}
 {{- else }}
-    - name: host-namespaces
+    - name: validate-registries
       match:
         any:
           - resources:
@@ -39,13 +39,10 @@ spec:
       exclude: {{ toYaml $policyValues.exclude | nindent 8 }}
 {{- end }}
       validate:
-        message: >-
-          Sharing the host namespaces is disallowed. The fields spec.hostNetwork,
-          spec.hostIPC, and spec.hostPID must be unset or set to `false`.
+        message: "Unknown image registry."
         pattern:
           spec:
-            =(hostPID): "false"
-            =(hostIPC): "false"
-            =(hostNetwork): "false"
+            containers:
+              - image: {{ .allowedRegistries | default "?*" | quote }}
 {{- end }}
 {{- end }}

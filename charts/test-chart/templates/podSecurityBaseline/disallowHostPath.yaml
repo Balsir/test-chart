@@ -1,4 +1,4 @@
-{{- $name := "disallowHostNamespaces" }}
+{{- $name := "disallowHostPath" }}
 {{- $category := "podSecurityBaseline" }}
 {{- $policyValues := get .Values.policies $name }}
 {{- $categoryValues := get .Values.policyCategories $category }}
@@ -12,24 +12,23 @@ metadata:
 {{- with $policyValues.autogenControllers }}
     pod-policies.kyverno.io/autogen-controllers: {{ . }}
 {{- end }}
-    policies.kyverno.io/title: Disallow Host Namespaces
+    policies.kyverno.io/title: Disallow hostPath
     policies.kyverno.io/category: {{ $category }}
     policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod,Volume
     kyverno.io/kyverno-version: 1.6.0
     kyverno.io/kubernetes-version: "1.22-1.23"
-    policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
-      Host namespaces (Process ID namespace, Inter-Process Communication namespace, and
-      network namespace) allow access to shared information and can be used to elevate
-      privileges. Pods should not be allowed access to host namespaces. This policy ensures
-      fields which make use of these host namespaces are unset or set to `false`.
+      HostPath volumes let Pods use host directories and volumes in containers.
+      Using host resources can be used to access shared data or escalate privileges
+      and should not be allowed. This policy ensures no hostPath volumes are in use.
 spec:
 {{ include "kyverno-policies.policySettings" (list $name $category $) }}
   rules:
 {{- if $policyValues.rulesOverride }}
 {{ toYaml $policyValues.rulesOverride | indent 4 }}
 {{- else }}
-    - name: host-namespaces
+    - name: host-path
       match:
         any:
           - resources:
@@ -40,12 +39,10 @@ spec:
 {{- end }}
       validate:
         message: >-
-          Sharing the host namespaces is disallowed. The fields spec.hostNetwork,
-          spec.hostIPC, and spec.hostPID must be unset or set to `false`.
+          HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset.
         pattern:
           spec:
-            =(hostPID): "false"
-            =(hostIPC): "false"
-            =(hostNetwork): "false"
+            =(volumes):
+              - X(hostPath): "null"
 {{- end }}
 {{- end }}
