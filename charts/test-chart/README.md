@@ -2,7 +2,7 @@
 
 A Helm chart for Kubernetes
 
-![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.5.1](https://img.shields.io/badge/Version-0.5.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Description
 Helm chart to deploy Kyverno policies.
@@ -169,13 +169,12 @@ policies:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | background | bool | `true` | Default background policy setting according to https://kyverno.io/docs/writing-policies/policy-settings/ |
-| enableAll | bool | `false` | Used to enable all policies. Categories or policies with value .disabled will be excluded. |
 | extraManifests | list | `[]` | List of extra manifests to deploy. Can be used to deploy your custom policies. |
 | failurePolicy | string | `"Fail"` | Default failurePolicy policy setting according to https://kyverno.io/docs/writing-policies/policy-settings/ |
 | fullnameOverride | string | `""` | fullnameOverride |
 | nameOverride | string | `""` | nameOverride |
-| policies | object | `{"blockStaleImages":{"enabled":false},"checkServiceAccount":{"enabled":false},"disableAutomountServiceAccountToken":{"enabled":false},"disablePodAutomountServiceAccountToken":{"enabled":false},"disableServiceDiscovery":{"enabled":false},"disallowAllSecrets":{"enabled":false},"disallowCapabilitiesStrict":{"enabled":false},"disallowDefaultNamespace":{"enabled":false},"disallowEmptyIngressHost":{"enabled":false},"disallowHostNamespaces":{"enabled":false},"disallowHostPath":{"enabled":false},"disallowHostPorts":{"enabled":false},"disallowPrivilegeEscalation":{"enabled":false},"disallowPrivilegedContainers":{"enabled":false},"disallowProcMount":{"enabled":false},"disallowSELinux":{"enabled":false},"preventNakedPods":{"enabled":false},"protectNodeTaints":{"enabled":false},"requireEncryptionAwsLoadBalancers":{"enabled":false},"requireLabels":{"enabled":false},"requireRoRootFs":{"enabled":false},"requireRunAsNonRoot":{"enabled":false},"requireRunAsNonRootUser":{"enabled":false},"restrictAppArmor":{"enabled":false},"restrictImageRegistries":{"enabled":false},"restrictIngressWildcard":{"enabled":false},"restrictNodePort":{"enabled":false},"restrictSeccompStrict":{"enabled":false},"restrictServiceExternalIps":{"enabled":false},"restrictSysctls":{"enabled":false},"restrictVolumeTypes":{"enabled":false}}` | Used to enable and override individual policies. Policy override takes precedence over category override. Policy name matches its filename. |
-| policyCategories | object | `{"other":{"enabled":false},"podSecurityBaseline":{"enabled":false},"podSecurityRestricted":{"enabled":false}}` | Used to enable policies in bulk per category. May override policy attributes for the entire category. |
+| policies | object | `{"blockStaleImages":{},"checkServiceAccount":{"background":false},"disableAutomountServiceAccountToken":{},"disablePodAutomountServiceAccountToken":{},"disableServiceDiscovery":{},"disallowAllSecrets":{},"disallowCapabilitiesStrict":{},"disallowDefaultNamespace":{},"disallowEmptyIngressHost":{},"disallowHostNamespaces":{},"disallowHostPath":{},"disallowHostPorts":{},"disallowPrivilegeEscalation":{},"disallowPrivilegedContainers":{},"disallowProcMount":{},"disallowSELinux":{},"preventNakedPods":{},"protectNodeTaints":{"background":false},"requireEncryptionAwsLoadBalancers":{},"requireLabels":{},"requireRoRootFs":{},"requireRunAsNonRoot":{},"requireRunAsNonRootUser":{},"restrictAppArmor":{},"restrictImageRegistries":{},"restrictIngressWildcard":{},"restrictNodePort":{},"restrictSeccompStrict":{},"restrictServiceExternalIps":{},"restrictSysctls":{},"restrictVolumeTypes":{}}` | Used to enable and override individual policies. Policy override takes precedence over category override. Policy name matches its filename. |
+| policyCategories | object | `{"other":{},"podSecurityBaseline":{},"podSecurityRestricted":{}}` | Used to enable policies in bulk per category. May override policy attributes for the entire category. |
 | validationFailureAction | string | `"Audit"` | Default validationFailureAction policy setting according to https://kyverno.io/docs/writing-policies/policy-settings/ |
 | validationFailureActionOverrides | list | `[]` | Default validationFailureActionOverrides policy setting according to https://kyverno.io/docs/writing-policies/policy-settings/ |
 
